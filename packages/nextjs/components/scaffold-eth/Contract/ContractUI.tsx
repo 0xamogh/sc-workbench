@@ -5,9 +5,17 @@ import { ContractVariables } from "./ContractVariables";
 import { ContractWriteMethods } from "./ContractWriteMethods";
 import { AbiFunction } from "abitype";
 import { Abi } from "viem";
+import { deployContract } from "viem/actions";
 import { useContractRead } from "wagmi";
 import { MiniFooter } from "~~/components/MiniFooter";
-import { Address, Balance, MethodSelector } from "~~/components/scaffold-eth";
+import {
+  Address,
+  Balance,
+  DecodeTxDataForm,
+  InputBase,
+  MethodSelector,
+  ReadOnlyFunctionForm,
+} from "~~/components/scaffold-eth";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useAbiNinjaState } from "~~/services/store/store";
 import { getTargetNetworks } from "~~/utils/scaffold-eth";
@@ -158,6 +166,31 @@ export const ContractUI = ({ className = "", initialContractData }: ContractUIPr
         <div className={`grid grid-cols-1 lg:grid-cols-6 w-full my-0 ${className} h-full flex-grow`}>
           <div className="col-span-6 grid grid-cols-1 gap-6 laptop:grid-cols-[repeat(13,_minmax(0,_1fr))] px-6 py-10">
             <div className="laptop:col-span-8 flex flex-col gap-6">
+              <div className="z-10">
+                <div className="bg-base-200 rounded-2xl shadow-xl flex flex-col mt-10 relative">
+                  <div className="h-[5rem] w-[5.5rem] bg-secondary absolute self-start rounded-[22px] -top-[38px] -left-[0px] -z-10 py-[0.65rem] shadow-lg shadow-base-300">
+                    <div className="flex items-center justify-center space-x-2">
+                      <p className="my-0 text-sm font-bold">Decode Tx</p>
+                    </div>
+                  </div>
+                  <div className="divide-y divide-base-300 px-5">
+                    <DecodeTxDataForm
+                      abi={initialContractData.abi as Abi}
+                      contractAddress={initialContractData.address}
+                      inheritedFrom=""
+                      abiFunction={
+                        {
+                          type: "function",
+                          inputs: [],
+                          name: "",
+                          outputs: [],
+                          stateMutability: "nonpayable", // or any valid state mutability value
+                        } as AbiFunction
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
               <div className="z-10">
                 <div className="bg-base-200 rounded-2xl shadow-xl flex flex-col mt-10 relative">
                   <div className="h-[5rem] w-[5.5rem] bg-secondary absolute self-start rounded-[22px] -top-[38px] -left-[0px] -z-10 py-[0.65rem] shadow-lg shadow-base-300">

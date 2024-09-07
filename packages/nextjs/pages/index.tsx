@@ -157,7 +157,7 @@ const Home: NextPage = () => {
           <div className="flex-grow flex flex-col items-center justify-center lg:w-full">
             {tabValues.map(tabValue => (
               <div
-                key={tabValue}
+                key={"tabValue"}
                 className={`absolute flex flex-col justify-center inset-0 w-full transition-transform duration-300 ease-in-out px-1 ${
                   activeTab === tabValue
                     ? "translate-x-0"
@@ -188,7 +188,7 @@ const Home: NextPage = () => {
                     >
                       {isFetchingAbi ? <span className="loading loading-spinner"></span> : "Load contract"}
                     </button>
-                    <div className="flex flex-col text-sm w-4/5 mb-10 mt-14">
+                    {/* <div className="flex flex-col text-sm w-4/5 mb-10 mt-14">
                       <div className="mb-2 text-center text-base">Quick access</div>
                       <div className="flex justify-center w-full rounded-xl">
                         <Link
@@ -213,7 +213,7 @@ const Home: NextPage = () => {
                           Opensea
                         </Link>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 ) : (
                   <div className="flex w-full flex-col items-center gap-3 p-6">
@@ -267,8 +267,8 @@ const Home: NextPage = () => {
               </div>
             ))}
           </div>
-          <SwitchTheme className="absolute top-5 right-5" />
-          <MiniFooter />
+          {/* <SwitchTheme className="absolute top-5 right-5" /> */}
+          {/* <MiniFooter /> */}
         </div>
       </div>
     </>

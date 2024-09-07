@@ -7,3 +7,4 @@ export * from "./TxReceipt";
 export * from "./utilsContract";
 export * from "./utilsDisplay";
 export * from "./WriteOnlyFunctionForm";
+export * from "./DecodeTxFunctionForm";
