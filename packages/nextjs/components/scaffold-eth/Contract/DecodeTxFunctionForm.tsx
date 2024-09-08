@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import React from "react";
 import { Abi } from "abitype";
 import { AbiParameter } from "viem";
 import { ContractInput, displayTxResult } from "~~/components/scaffold-eth";
@@ -15,6 +16,7 @@ type DecodedArgument = {
   value: any;
   type: string;
   name: string;
+  components?: DecodedArgument[];
 };
 
 export const DecodeTxDataForm = ({ abi }: DecodeTxDataFormProps) => {
@@ -26,6 +28,7 @@ export const DecodeTxDataForm = ({ abi }: DecodeTxDataFormProps) => {
     txData: form["key"],
   });
 
+  console.log("^_^ ~ file: DecodeTxFunctionForm.tsx:32 ~ DecodeTxDataForm ~ decodedData:", decodedData);
   useEffect(() => {
     if (error) {
       const parsedError = getParsedError(error);
@@ -36,7 +39,8 @@ export const DecodeTxDataForm = ({ abi }: DecodeTxDataFormProps) => {
   const renderArgument = (arg: DecodedArgument, depth = 0): JSX.Element => {
     const indent = "  ".repeat(depth);
 
-    if (Array.isArray(arg.value)) {
+    console.log("Arg, deptj", arg, depth);
+    if (arg.components) {
       return (
         <div key={arg.name} className="ml-2">
           <div className="flex items-center my-2">
@@ -46,24 +50,27 @@ export const DecodeTxDataForm = ({ abi }: DecodeTxDataFormProps) => {
             </span>
             <span className="block text-xs font-extralight leading-none"> {arg.type}</span>
           </div>
-          <div className="ml-4">{arg.value.map((item, index) => renderArgument(item, depth + 1))}</div>
+          <div className="ml-4">{arg.components.map((comp, index) => renderArgument(comp, depth + 1))}</div>
         </div>
       );
-    } else if (typeof arg.value === "object" && arg.value !== null) {
-      return (
-        <div key={arg.name} className="ml-2">
-          <div className="flex items-center my-2">
-            <span className="text-xs font-medium mr-2 leading-none">
-              {indent}
-              {arg.name}
-            </span>
-            <span className="block text-xs font-extralight leading-none"> {arg.type}</span>{" "}
-          </div>
-          <div className="ml-4">
-            {Object.entries(arg.value).map(([key, value]) => renderArgument({ name: key, value, type: "" }, depth + 1))}
-          </div>
-        </div>
-      );
+      // }
+      // else if (typeof arg === "object") {
+      //   return (
+      //     <div key={arg.name} className="ml-2 flex-row">
+      //       <div className="flex items-center my-2">
+      //         {Object.keys(arg).map(key => (
+      //           <React.Fragment key={key}>
+      //             <span className="text-xs font-medium mr-2 leading-none">
+      //               {indent}
+      //               {key}
+      //             </span>
+      //             <span className="block text-xs font-extralight leading-none">{arg.type}</span>
+      //             <span>{String(arg[key])}</span>
+      //           </React.Fragment>
+      //         ))}
+      //       </div>
+      //     </div>
+      //   );
     } else {
       return (
         <div key={arg.name} className="ml-2 flex-row">
@@ -72,9 +79,9 @@ export const DecodeTxDataForm = ({ abi }: DecodeTxDataFormProps) => {
               {indent}
               {arg.name}
             </span>
-            <span className="block text-xs font-extralight leading-none"> {arg.type}</span>{" "}
+            <span className="block text-xs font-extralight leading-none"> {arg.type}</span>
           </div>
-          <span>{String(arg.value)}</span>
+          <span>{typeof arg.value === "object" ? String(arg.value[arg.name]) : String(arg.value)}</span>
         </div>
       );
     }
